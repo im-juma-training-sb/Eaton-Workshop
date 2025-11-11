@@ -1,0 +1,72 @@
+name: Build and Test
+
+# ========================================
+# STEP 4: CI/CD with GitHub Actions
+# ========================================
+#
+# This workflow automatically builds and tests the project
+# on every pull request and push to main branch.
+#
+# INSTRUCTOR NOTE - LIVE DEMO PROMPTS:
+# 1. Show this file and ask Copilot Chat: "Explain this GitHub Actions workflow"
+# 2. Ask: "How can I add code coverage reporting to this workflow?"
+# 3. Ask: "What's the difference between 'on: push' and 'on: pull_request'?"
+#
+# This demonstrates using Copilot Chat to understand CI/CD configurations.
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the repository code
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # Set up Java 17
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: 'maven'
+
+    # Build the project
+    - name: Build with Maven
+      run: mvn clean install -DskipTests
+
+    # Run tests
+    - name: Run tests
+      run: mvn test
+
+    # OPTIONAL: Generate test report (commented out for now)
+    # LIVE DEMO EXERCISE: Ask students to uncomment this and use Copilot Chat:
+    # "How do I publish test results to the GitHub Actions summary?"
+    # - name: Publish test report
+    #   if: always()
+    #   uses: dorny/test-reporter@v1
+    #   with:
+    #     name: Test Results
+    #     path: target/surefire-reports/*.xml
+    #     reporter: java-junit
+
+    # Display build success message
+    - name: Build Success
+      if: success()
+      run: |
+        echo "✅ Build and tests passed successfully!"
+        echo "🚀 Ready for deployment"
+
+    # Display build failure message
+    - name: Build Failed
+      if: failure()
+      run: |
+        echo "❌ Build or tests failed"
+        echo "📝 Check the logs above for details"
