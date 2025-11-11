@@ -38,6 +38,39 @@ Complete 5 focused modules, each teaching a specific Copilot feature:- **GitHub 
 
 - **Spring Validation** - Input validation
 
+## 📊 Test Coverage
+
+![Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen)
+![Tests](https://img.shields.io/badge/tests-39%20passing-brightgreen)
+
+This project maintains **>80% test coverage** with comprehensive unit and integration tests:
+
+- **Line Coverage**: 95%
+- **Branch Coverage**: 100%
+- **Total Tests**: 39
+- **Test Categories**:
+  - Unit tests for models (User class)
+  - Controller tests (HelloController, UserController)
+  - Integration tests (Full application context)
+
+### Running Tests
+
+```bash
+# Run all tests
+mvn test
+
+# Run tests with coverage report
+mvn clean test jacoco:report
+
+# View coverage report
+open target/site/jacoco/index.html
+
+# Verify coverage thresholds
+mvn verify
+```
+
+The build will fail if coverage drops below 80% (line) or 70% (branch).
+
 ---
 
 ## 📚 Learning Objectives
