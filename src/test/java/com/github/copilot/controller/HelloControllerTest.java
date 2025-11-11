@@ -70,13 +70,35 @@ public class HelloControllerTest {
                 .andExpect(content().contentType("application/json"));
     }
 
-    // LIVE DEMO EXERCISE:
-    // Ask students to add a comment here:
-    // "// Add test for verifying the message contains 'Copilot'"
-    // Let Copilot suggest the test implementation
-    // This shows Copilot's ability to understand testing patterns
+    /**
+     * Test that the message contains 'Copilot'.
+     */
+    @Test
+    public void shouldReturnMessageContainingCopilot() throws Exception {
+        mockMvc.perform(get("/api/hello"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("Hello from Copilot Training Lab! 🚀"));
+    }
 
-    // ADVANCED EXERCISE:
-    // Ask Copilot Chat: "Generate a test that verifies all three fields in the response"
-    // Review the suggestion and discuss best practices
+    /**
+     * Test that all three response fields are present and have correct values.
+     */
+    @Test
+    public void shouldReturnAllThreeFields() throws Exception {
+        mockMvc.perform(get("/api/hello"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("Hello from Copilot Training Lab! 🚀"))
+                .andExpect(jsonPath("$.status").value("success"))
+                .andExpect(jsonPath("$.tip").exists());
+    }
+
+    /**
+     * Test that the tip field contains expected text.
+     */
+    @Test
+    public void shouldReturnTipFieldWithCopilotText() throws Exception {
+        mockMvc.perform(get("/api/hello"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.tip").value("Try using Copilot Chat to explore this codebase!"));
+    }
 }

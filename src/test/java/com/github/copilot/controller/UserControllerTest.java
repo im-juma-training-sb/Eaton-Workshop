@@ -85,4 +85,44 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$[1].email").value("bob@example.com"))
                 .andExpect(jsonPath("$[1].role").value("user"));
     }
+
+    /**
+     * Test that all users have valid email format.
+     */
+    @Test
+    public void shouldReturnUsersWithValidEmails() throws Exception {
+        mockMvc.perform(get("/api/users"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].email").value("alice@example.com"))
+                .andExpect(jsonPath("$[1].email").value("bob@example.com"))
+                .andExpect(jsonPath("$[2].email").value("charlie@example.com"))
+                .andExpect(jsonPath("$[3].email").value("diana@example.com"))
+                .andExpect(jsonPath("$[4].email").value("eve@example.com"));
+    }
+
+    /**
+     * Test that the last user has the guest role.
+     */
+    @Test
+    public void shouldReturnLastUserAsGuest() throws Exception {
+        mockMvc.perform(get("/api/users"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[4].id").value(5))
+                .andExpect(jsonPath("$[4].name").value("Eve Martinez"))
+                .andExpect(jsonPath("$[4].role").value("guest"));
+    }
+
+    /**
+     * Test that all user IDs are unique.
+     */
+    @Test
+    public void shouldReturnUsersWithUniqueIds() throws Exception {
+        mockMvc.perform(get("/api/users"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[1].id").value(2))
+                .andExpect(jsonPath("$[2].id").value(3))
+                .andExpect(jsonPath("$[3].id").value(4))
+                .andExpect(jsonPath("$[4].id").value(5));
+    }
 }
